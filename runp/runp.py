@@ -76,24 +76,24 @@ def get_function(functions, function_name):
     try:
         return functions[function_name]
     except KeyError:
-        print "No function named '{}' found!".format(function_name)
+        print("No function named '{}' found!".format(function_name))
         return None
 
 
 def print_functions(functions):
-    print "Available functions:"
-    for fname, function in functions.iteritems():
+    print("Available functions:")
+    for fname, function in functions.items():
         doc = get_docstring(function, abbrv=True)
-        print fname + "\t" + doc
+        print(fname + "\t" + doc)
 
 
 def print_function(functions, function):
     func = get_function(functions, function)
     if func:
-        print pydoc.plain(pydoc.render_doc(
+        print(pydoc.plain(pydoc.render_doc(
             func,
             "Displaying docstring for %s")
-        )
+        ))
 
 
 def run_function(functions, cmd):
@@ -103,10 +103,10 @@ def run_function(functions, cmd):
         if func:
             func(*args, **kwargs)
     except TypeError as e:
-        print e.message
+        print(e.args[0])
 
 
-def main():
+def main(*argv):
     parser = argparse.ArgumentParser(description='Run functions in a file.')
     parser.add_argument('runfile', help='file containing the functions')
     parser.add_argument('function', nargs='?', help='function to run')
@@ -119,11 +119,11 @@ def main():
         '-d', '--detail',
         help='print function docstring'
     )
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     runfile = os.path.abspath(args.runfile)
 
     if not os.path.isfile(runfile):
-        print "No such file '{}'".format(args.runfile)
+        print("No such file '{}'".format(args.runfile))
         sys.exit(1)
 
     imported_vars = load_runfile(runfile)
@@ -138,6 +138,9 @@ def main():
         sys.exit(0)
 
     if args.function is None:
-        print "No function was selected!"
+        print("No function was selected!")
         sys.exit(1)
     run_function(functions, args.function)
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
