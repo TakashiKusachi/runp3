@@ -9,7 +9,6 @@ long_description = readme
 
 setup(
     name='runp3',
-    version='v0.0.1',
     description='runp exports Python functions from files to the command line',
     long_description=long_description,
     long_description_content_type='text/markdown',
