@@ -9,9 +9,10 @@ long_description = readme
 
 setup(
     name='runp3',
-    version='0.0.1',
+    version='v0.0.1',
     description='runp exports Python functions from files to the command line',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     author='Takashi Kusachi',
     author_email='aisiars@gmail.com',
     url='https://github.com/TakashiKusachi/runp',
@@ -32,6 +33,7 @@ setup(
         'Intended Audience :: Developers',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         'Topic :: Software Development'
     ],
     python_requires='>3.7.11',
