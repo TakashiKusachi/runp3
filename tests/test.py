@@ -4,12 +4,13 @@ import os
 import io
 import sys
 import unittest
+from pathlib import Path
 
 
 class RunPTestCase(unittest.TestCase):
     def setUp(self):
-        self.test_path = os.path.dirname(os.path.abspath(__file__))
-        self.runfile = os.path.join(self.test_path, "testfile.py")
+        self.test_path = Path(__file__).parent
+        self.runfile = self.test_path.joinpath("testfile.py")
         self.imported_vars = runp.load_runfile(self.runfile)
         self.functions = runp.filter_vars(self.imported_vars)
         self.org_stdout, sys.stdout = sys.stdout, io.StringIO()
