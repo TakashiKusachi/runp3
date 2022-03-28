@@ -119,7 +119,7 @@ def main(*argv):
         '-d', '--detail',
         help='print function docstring'
     )
-    args = parser.parse_args(argv)
+    args = parser.parse_args(*argv)
     runfile = os.path.abspath(args.runfile)
 
     if not os.path.isfile(runfile):
