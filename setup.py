@@ -33,4 +33,5 @@ setup(
         'Programming Language :: Python',
         'Topic :: Software Development'
     ],
+    python_requires='>3.7.11',
 )
