@@ -142,5 +142,6 @@ def main(*argv):
         sys.exit(1)
     run_function(functions, args.function)
 
+
 if __name__ == "__main__":
     main(sys.argv[1:])
