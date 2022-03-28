@@ -23,6 +23,10 @@ setup(
             'runp = runp.runp:main',
         ]
     },
+    use_scm_version=True,
+    setup_requires=[
+        "setuptools_scm"
+    ],
     classifiers=[
         'Environment :: Console',
         'Intended Audience :: Developers',
