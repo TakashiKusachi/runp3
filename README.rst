@@ -1,7 +1,7 @@
 runp
 ====
 
-![Python package](https://github.com/TakashiKusachi/runp3/actions/workflows/python-package.yml/badge.svg)](https://github.com/TakashiKusachi/runp3/actions/workflows/python-package.yml)
+[![Python package](https://github.com/TakashiKusachi/runp3/actions/workflows/python-package.yml/badge.svg )](https://github.com/TakashiKusachi/runp3/actions/workflows/python-package.yml)
 
 This repository is a modified of runp, which is no longer maintained, for modern Python 3.
 
