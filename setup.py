@@ -9,7 +9,7 @@ long_description = readme
 
 setup(
     name='runp3',
-    version='0.0.1d',
+    version='v0.0.1',
     description='runp exports Python functions from files to the command line',
     long_description=long_description,
     author='Takashi Kusachi',
