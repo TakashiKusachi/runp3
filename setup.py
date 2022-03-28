@@ -9,7 +9,7 @@ long_description = readme
 
 setup(
     name='runp3',
-    version='0.0.1',
+    version='0.0.1d',
     description='runp exports Python functions from files to the command line',
     long_description=long_description,
     author='Takashi Kusachi',
@@ -23,10 +23,6 @@ setup(
             'runp = runp.runp:main',
         ]
     },
-    use_scm_version=True,
-    setup_requires=[
-        "setuptools_scm"
-    ],
     classifiers=[
         'Environment :: Console',
         'Intended Audience :: Developers',
