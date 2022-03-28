@@ -8,13 +8,13 @@ with open('README.rst') as f:
 long_description = readme
 
 setup(
-    name='runp',
-    version='0.0.2',
+    name='runp3',
+    version='0.0.1',
     description='runp exports Python functions from files to the command line',
     long_description=long_description,
-    author='Vasco Pinho',
-    author_email='vascogpinho@gmail.com',
-    url='https://github.com/vascop/runp',
+    author='Takashi Kusachi',
+    author_email='aisiars@gmail.com',
+    url='https://github.com/TakashiKusachi/runp',
     packages=find_packages(),
     test_suite='tests',
     install_requires=[],
