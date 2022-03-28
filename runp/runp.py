@@ -1,15 +1,17 @@
 #!/usr/bin/env python
-import os
 import sys
 import argparse
 import inspect
 import pydoc
+from typing import Any, Dict, List, Tuple, Callable, Optional
+from pathlib import Path
+from types import ModuleType
+from collections.abc import ItemsView
 
 
-def filter_vars(imported_vars):
+def filter_vars(imported_vars: ItemsView) -> Dict[str, Callable]:
     functions = {}
-    for tup in imported_vars:
-        name, obj = tup
+    for name, obj in imported_vars:
         if callable(obj) and not name.startswith('_'):
             if inspect.isclass(obj):
                 methods = inspect.getmembers(obj(), predicate=inspect.ismethod)
@@ -21,18 +23,18 @@ def filter_vars(imported_vars):
     return functions
 
 
-def load_runfile(runfile):
+def load_runfile(runfile: Path) -> ItemsView:
     importer = __import__
-    directory, runfile = os.path.split(runfile)
+    directory, runfile = runfile.parent, Path(runfile.name)
 
-    sys.path.insert(0, directory)
-    imported = importer(os.path.splitext(runfile)[0])
+    sys.path.insert(0, str(directory))
+    imported: ModuleType = importer(runfile.stem)
     del sys.path[0]
     imported_vars = vars(imported).items()
     return imported_vars
 
 
-def _escape_split(sep, argstr):
+def _escape_split(sep: str, argstr: str) -> str:
     escaped_sep = r'\%s' % sep
 
     if escaped_sep not in argstr:
@@ -47,7 +49,7 @@ def _escape_split(sep, argstr):
     return startlist + [unfinished] + endlist[1:]
 
 
-def parse_args(cmd):
+def parse_args(cmd: str) -> Tuple[str, List[str], Dict[str, str]]:
     args = []
     kwargs = {}
     if ':' in cmd:
@@ -62,7 +64,7 @@ def parse_args(cmd):
     return cmd, args, kwargs
 
 
-def get_docstring(function, abbrv=False):
+def get_docstring(function: Callable, abbrv=False) -> Optional[str]:
     try:
         doc = inspect.getdoc(function)
         if abbrv:
@@ -72,7 +74,7 @@ def get_docstring(function, abbrv=False):
     return doc
 
 
-def get_function(functions, function_name):
+def get_function(functions: Dict[str, Callable], function_name: str) -> Optional[Callable]:
     try:
         return functions[function_name]
     except KeyError:
@@ -80,14 +82,14 @@ def get_function(functions, function_name):
         return None
 
 
-def print_functions(functions):
+def print_functions(functions: Dict[str, Callable]) -> None:
     print("Available functions:")
     for fname, function in functions.items():
         doc = get_docstring(function, abbrv=True)
         print(fname + "\t" + doc)
 
 
-def print_function(functions, function):
+def print_function(functions: Dict[str, Callable], function: str) -> None:
     func = get_function(functions, function)
     if func:
         print(pydoc.plain(pydoc.render_doc(
@@ -96,7 +98,7 @@ def print_function(functions, function):
         ))
 
 
-def run_function(functions, cmd):
+def run_function(functions: Dict[str, Callable], cmd: str) -> None:
     function, args, kwargs = parse_args(cmd)
     try:
         func = get_function(functions, function)
@@ -106,7 +108,8 @@ def run_function(functions, cmd):
         print(e.args[0])
 
 
-def main(*argv):
+def main(*argv: Tuple[Any]) -> None:
+
     parser = argparse.ArgumentParser(description='Run functions in a file.')
     parser.add_argument('runfile', help='file containing the functions')
     parser.add_argument('function', nargs='?', help='function to run')
@@ -119,10 +122,11 @@ def main(*argv):
         '-d', '--detail',
         help='print function docstring'
     )
-    args = parser.parse_args(argv)
-    runfile = os.path.abspath(args.runfile)
+    args = parser.parse_args(*argv)
 
-    if not os.path.isfile(runfile):
+    runfile = Path(args.runfile).resolve()
+
+    if not runfile.is_file:
         print("No such file '{}'".format(args.runfile))
         sys.exit(1)
 

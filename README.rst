@@ -1,6 +1,10 @@
 runp
 ====
 
+[![Python package](https://github.com/TakashiKusachi/runp3/actions/workflows/python-package.yml/badge.svg)](https://github.com/TakashiKusachi/runp3/actions/workflows/python-package.yml)
+
+This repository is a modified of runp, which is no longer maintained, for modern Python 3.
+
 runp exports Python functions from files to the command line. 
 You don't need to change your existing code.
 
