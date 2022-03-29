@@ -38,7 +38,7 @@ wut\tSuper docstring test"""
     def test_print_function_no_docstring(self) -> None:
         out = """Displaying docstring for function wet in module testfile
 
-wet()"""
+wet() -> None"""
         runp.print_function(self.functions, "wet")
         output = sys.stdout.getvalue().strip()  # type: ignore
         self.assertEquals(str(output), out)
@@ -46,7 +46,7 @@ wet()"""
     def test_print_function_multi_docstring(self) -> None:
         out = """Displaying docstring for function wut in module testfile
 
-wut(text, woop=False)
+wut(text: str, woop: bool = False) -> None
     Super docstring test
     
     Args:
@@ -212,7 +212,7 @@ wut\tSuper docstring test"""
         
         out = """Displaying docstring for function wut in module testfile
 
-wut(text, woop=False)
+wut(text: str, woop: bool = False) -> None
     Super docstring test
     
     Args:
@@ -231,7 +231,7 @@ wut(text, woop=False)
         
         out = """Displaying docstring for function wut in module testfile
 
-wut(text, woop=False)
+wut(text: str, woop: bool = False) -> None
     Super docstring test
     
     Args:
