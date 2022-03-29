@@ -107,11 +107,17 @@ def run_function(functions: Dict[str, Callable], cmd: str) -> None:
         print(e.args[0])
 
 
-def main(*argv: Tuple[Any]) -> None:
+def main(argv: Tuple[Any]) -> None:
 
-    parser = argparse.ArgumentParser(description='Run functions in a file.')
-    parser.add_argument('runfile', help='file containing the functions')
-    parser.add_argument('function', nargs='?', help='function to run')
+    parser = argparse.ArgumentParser(
+        prog="runp",
+        description='Run functions in a file.')
+    parser.add_argument(
+        'runfile',
+        help='file containing the functions')
+    parser.add_argument(
+        'function',
+        nargs='?', help='function to run')
     parser.add_argument(
         '-l', '--list',
         action='store_true',
@@ -121,11 +127,11 @@ def main(*argv: Tuple[Any]) -> None:
         '-d', '--detail',
         help='print function docstring'
     )
-    args = parser.parse_args(*argv)
+    args = parser.parse_args(argv)
 
     runfile = Path(args.runfile).resolve()
 
-    if not runfile.is_file:
+    if not runfile.is_file():
         print("No such file '{}'".format(args.runfile))
         sys.exit(1)
 
@@ -143,6 +149,7 @@ def main(*argv: Tuple[Any]) -> None:
     if args.function is None:
         print("No function was selected!")
         sys.exit(1)
+        
     run_function(functions, args.function)
 
 
