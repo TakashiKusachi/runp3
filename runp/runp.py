@@ -64,7 +64,7 @@ def parse_args(cmd: str) -> Tuple[str, List[str], Dict[str, str]]:
     return cmd, args, kwargs
 
 
-def get_docstring(function: Callable, abbrv=False) -> Optional[str]:
+def get_docstring(function: Callable, abbrv: bool = False) -> Optional[str]:
     doc = inspect.getdoc(function)
     if abbrv and doc is not None:
         doc = doc.splitlines()[0].strip()
@@ -149,7 +149,7 @@ def main(argv: List[str]) -> None:
     if args.function is None:
         print("No function was selected!")
         sys.exit(1)
-        
+
     run_function(functions, args.function)
 
 
