@@ -65,11 +65,10 @@ def parse_args(cmd: str) -> Tuple[str, List[str], Dict[str, str]]:
 
 
 def get_docstring(function: Callable, abbrv=False) -> Optional[str]:
-    try:
-        doc = inspect.getdoc(function)
-        if abbrv:
-            doc = doc.splitlines()[0].strip()
-    except:
+    doc = inspect.getdoc(function)
+    if abbrv and doc is not None:
+        doc = doc.splitlines()[0].strip()
+    else:
         doc = ""
     return doc
 

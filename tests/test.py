@@ -1,6 +1,5 @@
 from runp import runp
 
-import os
 import io
 import sys
 import unittest
@@ -14,7 +13,7 @@ class RunPTestCase(unittest.TestCase):
         self.imported_vars = runp.load_runfile(self.runfile)
         self.functions = runp.filter_vars(self.imported_vars)
         self.org_stdout, sys.stdout = sys.stdout, io.StringIO()
-        
+
     def tearDown(self) -> None:
         sys.stdout = self.org_stdout
 
@@ -123,6 +122,7 @@ wut(text, woop=False)
         results = [['wut:arg', 'wow'], ["'such spaces'"], ['arg2', 'good']]
         for i, inputstr in enumerate(inputstrs):
             self.assertEquals(runp._escape_split('=', inputstr), results[i])
+
 
 if __name__ == '__main__':
     unittest.main()
