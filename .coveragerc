@@ -25,3 +25,4 @@ exclude_lines =
     @(abc\.)?abstractmethod
 
 ignore_errors = True
+omit = ./tests/testfile.py
