@@ -141,8 +141,8 @@ wut(text, woop=False)
         with self.assertRaises(SystemExit):
             runp.main(list())
             
-        output: str = sys.stdout.getvalue().strip()
-        error: str = sys.stderr.getvalue().strip()
+        output: str = sys.stdout.getvalue().strip()  # type: ignore
+        error: str = sys.stderr.getvalue().strip()  # type: ignore
         self.assertEqual(output, "")
         self.assertTrue(error.startswith("usage: runp"))
         
@@ -151,8 +151,8 @@ wut(text, woop=False)
         with self.assertRaises(SystemExit):
             runp.main([".\\tests"])
             
-        output: str = sys.stdout.getvalue().strip()
-        error: str = sys.stderr.getvalue().strip()
+        output: str = sys.stdout.getvalue().strip()  # type: ignore
+        error: str = sys.stderr.getvalue().strip()  # type: ignore
         self.assertEqual(output, "No such file '.\\tests'")
         self.assertEqual(error, "")
         
@@ -161,8 +161,8 @@ wut(text, woop=False)
         with self.assertRaises(SystemExit):
             runp.main([".\\invalid"])
             
-        output: str = sys.stdout.getvalue().strip()
-        error: str = sys.stderr.getvalue().strip()
+        output: str = sys.stdout.getvalue().strip()  # type: ignore
+        error: str = sys.stderr.getvalue().strip()  # type: ignore
         self.assertEqual(output, "No such file '.\\invalid'")
         self.assertEqual(error, "")
     
@@ -171,8 +171,8 @@ wut(text, woop=False)
         with self.assertRaises(SystemExit):
             runp.main(["./tests/testfile.py"])
             
-        output: str = sys.stdout.getvalue().strip()
-        error: str = sys.stderr.getvalue().strip()
+        output: str = sys.stdout.getvalue().strip()  # type: ignore
+        error: str = sys.stderr.getvalue().strip()  # type: ignore
         self.assertEqual(output, "No function was selected!")
         self.assertEqual(error, "")
         
@@ -187,8 +187,8 @@ wut\tSuper docstring test"""
         with self.assertRaises(SystemExit):
             runp.main(["./tests/testfile.py", "-l"])
             
-        output: str = sys.stdout.getvalue().strip()
-        error: str = sys.stderr.getvalue().strip()
+        output: str = sys.stdout.getvalue().strip()  # type: ignore
+        error: str = sys.stderr.getvalue().strip()  # type: ignore
         self.assertEqual(output, out)
         self.assertEqual(error, "")
 
@@ -203,8 +203,8 @@ wut\tSuper docstring test"""
         with self.assertRaises(SystemExit):
             runp.main(["./tests/testfile.py", "--list"])
             
-        output: str = sys.stdout.getvalue().strip()
-        error: str = sys.stderr.getvalue().strip()
+        output: str = sys.stdout.getvalue().strip()  # type: ignore
+        error: str = sys.stderr.getvalue().strip()  # type: ignore
         self.assertEqual(output, out)
         self.assertEqual(error, "")
 
@@ -222,8 +222,8 @@ wut(text, woop=False)
         with self.assertRaises(SystemExit):
             runp.main(["./tests/testfile.py", "-d", "wut"])
             
-        output: str = sys.stdout.getvalue().strip()
-        error: str = sys.stderr.getvalue().strip()
+        output: str = sys.stdout.getvalue().strip()  # type: ignore
+        error: str = sys.stderr.getvalue().strip()  # type: ignore
         self.assertEqual(output, out)
         self.assertEqual(error, "")
         
@@ -241,8 +241,8 @@ wut(text, woop=False)
         with self.assertRaises(SystemExit):
             runp.main(["./tests/testfile.py", "--detail", "wut"])
             
-        output: str = sys.stdout.getvalue().strip()
-        error: str = sys.stderr.getvalue().strip()
+        output: str = sys.stdout.getvalue().strip()  # type: ignore
+        error: str = sys.stderr.getvalue().strip()  # type: ignore
         self.assertEqual(output, out)
         self.assertEqual(error, "")
         
@@ -252,8 +252,8 @@ wut(text, woop=False)
 
         runp.main(["./tests/testfile.py", "wat"])
             
-        output: str = sys.stdout.getvalue().strip()
-        error: str = sys.stderr.getvalue().strip()
+        output: str = sys.stdout.getvalue().strip()  # type: ignore
+        error: str = sys.stderr.getvalue().strip()  # type: ignore
         self.assertEqual(output, out)
         self.assertEqual(error, "")
 

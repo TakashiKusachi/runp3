@@ -3,7 +3,7 @@ import sys
 import argparse
 import inspect
 import pydoc
-from typing import Any, Dict, List, Tuple, Callable, Optional
+from typing import Dict, List, Tuple, Callable, Optional
 from pathlib import Path
 from types import ModuleType
 from collections.abc import ItemsView
@@ -34,7 +34,7 @@ def load_runfile(runfile: Path) -> ItemsView:
     return imported_vars
 
 
-def _escape_split(sep: str, argstr: str) -> str:
+def _escape_split(sep: str, argstr: str) -> List[str]:
     escaped_sep = r'\%s' % sep
 
     if escaped_sep not in argstr:
@@ -85,7 +85,7 @@ def print_functions(functions: Dict[str, Callable]) -> None:
     print("Available functions:")
     for fname, function in functions.items():
         doc = get_docstring(function, abbrv=True)
-        print(fname + "\t" + doc)
+        print(fname + "\t" + doc if doc is not None else "")
 
 
 def print_function(functions: Dict[str, Callable], function: str) -> None:
@@ -107,7 +107,7 @@ def run_function(functions: Dict[str, Callable], cmd: str) -> None:
         print(e.args[0])
 
 
-def main(argv: Tuple[Any]) -> None:
+def main(argv: List[str]) -> None:
 
     parser = argparse.ArgumentParser(
         prog="runp",
