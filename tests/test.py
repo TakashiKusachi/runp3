@@ -13,9 +13,11 @@ class RunPTestCase(unittest.TestCase):
         self.imported_vars = runp.load_runfile(self.runfile)
         self.functions = runp.filter_vars(self.imported_vars)
         self.org_stdout, sys.stdout = sys.stdout, io.StringIO()
+        self.org_stderr, sys.stderr = sys.stderr, io.StringIO()
 
     def tearDown(self) -> None:
         sys.stdout = self.org_stdout
+        sys.stderr = self.org_stderr
 
     def test_load_runfile(self):
         self.assertTrue(len(self.imported_vars) >= len(self.functions))
@@ -122,6 +124,138 @@ wut(text, woop=False)
         results = [['wut:arg', 'wow'], ["'such spaces'"], ['arg2', 'good']]
         for i, inputstr in enumerate(inputstrs):
             self.assertEquals(runp._escape_split('=', inputstr), results[i])
+
+    def test_escape_split_escape_comma(self):
+        inputstr = "wut:arg=wow\\,,'such spaces',arg2=good"
+        splitted = ['wut:arg=wow,', "'such spaces'", 'arg2=good']
+        self.assertEquals(runp._escape_split(',', inputstr), splitted)
+
+    def test_escape_split_escape_equals(self):
+        inputstrs = ['wut:arg=wow\\=', "'such spaces'", 'arg2=good']
+        results = [['wut:arg', 'wow='], ["'such spaces'"], ['arg2', 'good']]
+        for i, inputstr in enumerate(inputstrs):
+            self.assertEquals(runp._escape_split('=', inputstr), results[i])
+            
+    def test_args_empty(self) -> None:
+        
+        with self.assertRaises(SystemExit):
+            runp.main(list())
+            
+        output: str = sys.stdout.getvalue().strip()
+        error: str = sys.stderr.getvalue().strip()
+        self.assertEqual(output, "")
+        self.assertTrue(error.startswith("usage: runp"))
+        
+    def test_args_is_not_file(self) -> None:
+        
+        with self.assertRaises(SystemExit):
+            runp.main([".\\tests"])
+            
+        output: str = sys.stdout.getvalue().strip()
+        error: str = sys.stderr.getvalue().strip()
+        self.assertEqual(output, "No such file '.\\tests'")
+        self.assertEqual(error, "")
+        
+    def test_args_is_invalid(self) -> None:
+        
+        with self.assertRaises(SystemExit):
+            runp.main([".\\invalid"])
+            
+        output: str = sys.stdout.getvalue().strip()
+        error: str = sys.stderr.getvalue().strip()
+        self.assertEqual(output, "No such file '.\\invalid'")
+        self.assertEqual(error, "")
+    
+    def test_args_file_only(self) -> None:
+        
+        with self.assertRaises(SystemExit):
+            runp.main(["./tests/testfile.py"])
+            
+        output: str = sys.stdout.getvalue().strip()
+        error: str = sys.stderr.getvalue().strip()
+        self.assertEqual(output, "No function was selected!")
+        self.assertEqual(error, "")
+        
+    def test_args_list_short(self) -> None:
+        
+        out = """Available functions:
+Wip.print_it\t
+wet\t
+wat\tWEEE
+wut\tSuper docstring test"""
+
+        with self.assertRaises(SystemExit):
+            runp.main(["./tests/testfile.py", "-l"])
+            
+        output: str = sys.stdout.getvalue().strip()
+        error: str = sys.stderr.getvalue().strip()
+        self.assertEqual(output, out)
+        self.assertEqual(error, "")
+
+    def test_args_list_long(self) -> None:
+        
+        out = """Available functions:
+Wip.print_it\t
+wet\t
+wat\tWEEE
+wut\tSuper docstring test"""
+
+        with self.assertRaises(SystemExit):
+            runp.main(["./tests/testfile.py", "--list"])
+            
+        output: str = sys.stdout.getvalue().strip()
+        error: str = sys.stderr.getvalue().strip()
+        self.assertEqual(output, out)
+        self.assertEqual(error, "")
+
+    def test_args_details_short(self) -> None:
+        
+        out = """Displaying docstring for function wut in module testfile
+
+wut(text, woop=False)
+    Super docstring test
+    
+    Args:
+        text (str): The text to print
+        woop (boolean, optional): Default false"""
+
+        with self.assertRaises(SystemExit):
+            runp.main(["./tests/testfile.py", "-d", "wut"])
+            
+        output: str = sys.stdout.getvalue().strip()
+        error: str = sys.stderr.getvalue().strip()
+        self.assertEqual(output, out)
+        self.assertEqual(error, "")
+        
+    def test_args_details_long(self) -> None:
+        
+        out = """Displaying docstring for function wut in module testfile
+
+wut(text, woop=False)
+    Super docstring test
+    
+    Args:
+        text (str): The text to print
+        woop (boolean, optional): Default false"""
+
+        with self.assertRaises(SystemExit):
+            runp.main(["./tests/testfile.py", "--detail", "wut"])
+            
+        output: str = sys.stdout.getvalue().strip()
+        error: str = sys.stderr.getvalue().strip()
+        self.assertEqual(output, out)
+        self.assertEqual(error, "")
+        
+    def test_args_list(self) -> None:
+        
+        out = """testing, 1, 2, 3"""
+
+        runp.main(["./tests/testfile.py", "wat"])
+            
+        output: str = sys.stdout.getvalue().strip()
+        error: str = sys.stderr.getvalue().strip()
+        self.assertEqual(output, out)
+        self.assertEqual(error, "")
 
 
 if __name__ == '__main__':
