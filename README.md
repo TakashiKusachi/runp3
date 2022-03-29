@@ -1,6 +1,6 @@
 # runp
 
-[![Python package](https://github.com/TakashiKusachi/runp3/actions/workflows/python-package.yml/badge.svg )](https://github.com/TakashiKusachi/runp3/actions/workflows/python-package.yml) [![PyPI version](https://badge.fury.io/py/runp3.svg )](https://badge.fury.io/py/runp3) [![Python Versions](https://img.shields.io/pypi/pyversions/runp3.svg )](https://pypi.org/project/runp3/)
+[![Python package](https://github.com/TakashiKusachi/runp3/actions/workflows/python-package.yml/badge.svg )](https://github.com/TakashiKusachi/runp3/actions/workflows/python-package.yml) [![Coverage Status](https://coveralls.io/repos/github/TakashiKusachi/runp3/badge.svg?branch=master)](https://coveralls.io/github/TakashiKusachi/runp3?branch=master) [![PyPI version](https://badge.fury.io/py/runp3.svg )](https://badge.fury.io/py/runp3) [![Python Versions](https://img.shields.io/pypi/pyversions/runp3.svg )](https://pypi.org/project/runp3/)
 
 
 This repository is a modified of runp, which is no longer maintained, for modern Python 3.
