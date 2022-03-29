@@ -1,18 +1,18 @@
 class Wip():
-    def print_it(self):
+    def print_it(self) -> None:
         print("itsa me mario")
 
 
-def wet():
+def wet() -> None:
     print("beep boop")
 
 
-def wat():
+def wat() -> None:
     "WEEE"
     print("testing, 1, 2, 3")
 
 
-def wut(text, woop=False):
+def wut(text: str, woop: bool = False) -> None:
     """ Super docstring test
 
     Args:
@@ -23,5 +23,5 @@ def wut(text, woop=False):
     print(woop)
 
 
-def _hidden():
+def _hidden() -> None:
     print("secret")

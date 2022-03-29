@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 class RunPTestCase(unittest.TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         self.test_path = Path(__file__).parent
         self.runfile = self.test_path.joinpath("testfile.py")
         self.imported_vars = runp.load_runfile(self.runfile)
@@ -19,31 +19,31 @@ class RunPTestCase(unittest.TestCase):
         sys.stdout = self.org_stdout
         sys.stderr = self.org_stderr
 
-    def test_load_runfile(self):
+    def test_load_runfile(self) -> None:
         self.assertTrue(len(self.imported_vars) >= len(self.functions))
 
-    def test_filter_vars(self):
+    def test_filter_vars(self) -> None:
         self.assertEquals(len(self.functions), 4)
 
-    def test_print_functions(self):
+    def test_print_functions(self) -> None:
         out = """Available functions:
 Wip.print_it\t
 wet\t
 wat\tWEEE
 wut\tSuper docstring test"""
         runp.print_functions(self.functions)
-        output = sys.stdout.getvalue().strip()
+        output = sys.stdout.getvalue().strip()  # type: ignore
         self.assertEquals(str(output), out)
 
-    def test_print_function_no_docstring(self):
+    def test_print_function_no_docstring(self) -> None:
         out = """Displaying docstring for function wet in module testfile
 
 wet()"""
         runp.print_function(self.functions, "wet")
-        output = sys.stdout.getvalue().strip()
+        output = sys.stdout.getvalue().strip()  # type: ignore
         self.assertEquals(str(output), out)
 
-    def test_print_function_multi_docstring(self):
+    def test_print_function_multi_docstring(self) -> None:
         out = """Displaying docstring for function wut in module testfile
 
 wut(text, woop=False)
@@ -53,59 +53,59 @@ wut(text, woop=False)
         text (str): The text to print
         woop (boolean, optional): Default false"""
         runp.print_function(self.functions, "wut")
-        output = sys.stdout.getvalue().strip()
+        output = sys.stdout.getvalue().strip()  # type: ignore
         self.assertEquals(str(output), out)
 
-    def test_run_function_noargs(self):
+    def test_run_function_noargs(self) -> None:
         out = "testing, 1, 2, 3"
         runp.run_function(self.functions, "wat")
-        output = sys.stdout.getvalue().strip()
+        output = sys.stdout.getvalue().strip()  # type: ignore
         self.assertEquals(str(output), out)
 
-    def test_run_function_args(self):
+    def test_run_function_args(self) -> None:
         out = "mytext\ndoobey"
         runp.run_function(self.functions, "wut:mytext,doobey")
-        output = sys.stdout.getvalue().strip()
+        output = sys.stdout.getvalue().strip()  # type: ignore
         self.assertEquals(str(output), out)
 
-    def test_run_function_named_args(self):
+    def test_run_function_named_args(self) -> None:
         out = "mytext\nTrue"
         runp.run_function(self.functions, "wut:mytext,woop=True")
-        output = sys.stdout.getvalue().strip()
+        output = sys.stdout.getvalue().strip()  # type: ignore
         self.assertEquals(str(output), out)
 
-    def test_run_function_reverse_args(self):
+    def test_run_function_reverse_args(self) -> None:
         out = "mytext\nTrue"
         runp.run_function(self.functions, "wut:woop=True,mytext")
-        output = sys.stdout.getvalue().strip()
+        output = sys.stdout.getvalue().strip()  # type: ignore
         self.assertEquals(str(output), out)
 
-    def test_run_function_wrong_args(self):
+    def test_run_function_wrong_args(self) -> None:
         out = "wut() missing 1 required positional argument: 'text'"
         runp.run_function(self.functions, "wut")
-        output = sys.stdout.getvalue().strip()
+        output = sys.stdout.getvalue().strip()  # type: ignore
         self.assertEquals(str(output), out)
 
-    def test_get_function_nonexistant(self):
+    def test_get_function_nonexistant(self) -> None:
         nofunc = "wutwut"
         out = "No function named '{}' found!".format(nofunc)
         runp.get_function(self.functions, nofunc)
-        output = sys.stdout.getvalue().strip()
+        output = sys.stdout.getvalue().strip()  # type: ignore
         self.assertEquals(str(output), out)
 
-    def test_parse_args_noargs(self):
+    def test_parse_args_noargs(self) -> None:
         inputstr = "wut"
         cmd, args, kwargs = runp.parse_args(inputstr)
         tup = (cmd, args, kwargs)
         self.assertEquals(tup, ("wut", [], {}))
 
-    def test_parse_args_nokwargs(self):
+    def test_parse_args_nokwargs(self) -> None:
         inputstr = "wut:wow,such,good"
         cmd, args, kwargs = runp.parse_args(inputstr)
         tup = (cmd, args, kwargs)
         self.assertEquals(tup, ("wut", ["wow", "such", "good"], {}))
 
-    def test_parse_args(self):
+    def test_parse_args(self) -> None:
         inputstr = "wut:arg=wow,'such spaces',arg2=good"
         cmd, args, kwargs = runp.parse_args(inputstr)
         tup = (cmd, args, kwargs)
@@ -114,23 +114,23 @@ wut(text, woop=False)
             ("wut", ["'such spaces'"], {"arg": "wow", "arg2": "good"})
         )
 
-    def test_escape_split_comma(self):
+    def test_escape_split_comma(self) -> None:
         inputstr = "wut:arg=wow,'such spaces',arg2=good"
         splitted = ['wut:arg=wow', "'such spaces'", 'arg2=good']
         self.assertEquals(runp._escape_split(',', inputstr), splitted)
 
-    def test_escape_split_equals(self):
+    def test_escape_split_equals(self) -> None:
         inputstrs = ['wut:arg=wow', "'such spaces'", 'arg2=good']
         results = [['wut:arg', 'wow'], ["'such spaces'"], ['arg2', 'good']]
         for i, inputstr in enumerate(inputstrs):
             self.assertEquals(runp._escape_split('=', inputstr), results[i])
 
-    def test_escape_split_escape_comma(self):
+    def test_escape_split_escape_comma(self) -> None:
         inputstr = "wut:arg=wow\\,,'such spaces',arg2=good"
         splitted = ['wut:arg=wow,', "'such spaces'", 'arg2=good']
         self.assertEquals(runp._escape_split(',', inputstr), splitted)
 
-    def test_escape_split_escape_equals(self):
+    def test_escape_split_escape_equals(self) -> None:
         inputstrs = ['wut:arg=wow\\=', "'such spaces'", 'arg2=good']
         results = [['wut:arg', 'wow='], ["'such spaces'"], ['arg2', 'good']]
         for i, inputstr in enumerate(inputstrs):
