@@ -14,5 +14,8 @@
         "cov.xml",
         "coverage.xml",
         "jacoco.xml",
-    ]
+    ],
+    "python.linting.pylintEnabled": true,
+    "python.linting.flake8Enabled": true,
+    "editor.formatOnSave": true
 }
