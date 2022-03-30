@@ -1,4 +1,12 @@
 #!/usr/bin/env python
+"""runp.
+
+This repository is a modified of runp, which is no longer maintained, for modern Python 3.
+
+runp exports Python functions from files to the command line.
+You don't need to change your existing code.
+"""
+
 import sys
 import argparse
 import inspect
@@ -10,6 +18,14 @@ from collections.abc import ItemsView
 
 
 def filter_vars(imported_vars: ItemsView) -> Dict[str, Callable]:
+    """Gets the name and object of the callable object from the imported_vars.
+
+    Args:
+        imported_vars (ItemsView): python module items iterator.
+
+    Returns:
+        Dict[str, Callable]: dictionary of name and callable object
+    """
     functions = {}
     for name, obj in imported_vars:
         if callable(obj) and not name.startswith('_'):
@@ -24,6 +40,14 @@ def filter_vars(imported_vars: ItemsView) -> Dict[str, Callable]:
 
 
 def load_runfile(runfile: Path) -> ItemsView:
+    """Load Python file.
+
+    Args:
+        runfile (Path): Python file path.
+
+    Returns:
+        ItemsView: python module items iterator.
+    """
     importer = __import__
     directory, runfile = runfile.parent, Path(runfile.name)
 
@@ -35,6 +59,15 @@ def load_runfile(runfile: Path) -> ItemsView:
 
 
 def _escape_split(sep: str, argstr: str) -> List[str]:
+    """Split function with escape characters.
+
+    Args:
+        sep (str): Split character.
+        argstr (str): String to be divided.
+
+    Returns:
+        List[str]: List of splited strings.
+    """
     escaped_sep = r'\%s' % sep
 
     if escaped_sep not in argstr:
@@ -50,6 +83,15 @@ def _escape_split(sep: str, argstr: str) -> List[str]:
 
 
 def parse_args(cmd: str) -> Tuple[str, List[str], Dict[str, str]]:
+    """Argment parser.
+
+    Args:
+        cmd (str): argment.
+
+    Returns:
+        Tuple[str, List[str], Dict[str, str]]: original argument,
+        positional argument, and key word argument.
+    """
     args = []
     kwargs = {}
     if ':' in cmd:
@@ -64,7 +106,16 @@ def parse_args(cmd: str) -> Tuple[str, List[str], Dict[str, str]]:
     return cmd, args, kwargs
 
 
-def get_docstring(function: Callable, abbrv: bool = False) -> Optional[str]:
+def get_docstring(function: Callable, abbrv: bool = False) -> str:
+    """Get docstring.
+
+    Args:
+        function (Callable): targe callable object
+        abbrv (bool, optional): Defaults to False.
+
+    Returns:
+        str: docstring.
+    """
     doc = inspect.getdoc(function)
     if abbrv and doc is not None:
         doc = doc.splitlines()[0].strip()
@@ -74,6 +125,15 @@ def get_docstring(function: Callable, abbrv: bool = False) -> Optional[str]:
 
 
 def get_function(functions: Dict[str, Callable], function_name: str) -> Optional[Callable]:
+    """Get function.
+
+    Args:
+        functions (Dict[str, Callable]): original function dictionaly.
+        function_name (str): search function name.
+
+    Returns:
+        Optional[Callable]: find callable object.
+    """
     try:
         return functions[function_name]
     except KeyError:
@@ -82,6 +142,11 @@ def get_function(functions: Dict[str, Callable], function_name: str) -> Optional
 
 
 def print_functions(functions: Dict[str, Callable]) -> None:
+    """Print functions list.
+
+    Args:
+        functions (Dict[str, Callable]): Print functions
+    """
     print("Available functions:")
     for fname, function in functions.items():
         doc = get_docstring(function, abbrv=True)
@@ -89,6 +154,12 @@ def print_functions(functions: Dict[str, Callable]) -> None:
 
 
 def print_function(functions: Dict[str, Callable], function: str) -> None:
+    """Print function.
+
+    Args:
+        functions (Dict[str, Callable]): Print functions.
+        function (str): function name.
+    """
     func = get_function(functions, function)
     if func:
         print(pydoc.plain(pydoc.render_doc(
@@ -98,6 +169,12 @@ def print_function(functions: Dict[str, Callable], function: str) -> None:
 
 
 def run_function(functions: Dict[str, Callable], cmd: str) -> None:
+    """Run function.
+
+    Args:
+        functions (Dict[str, Callable]): Print functions.
+        cmd (str): command.
+    """
     function, args, kwargs = parse_args(cmd)
     try:
         func = get_function(functions, function)
@@ -108,7 +185,11 @@ def run_function(functions: Dict[str, Callable], cmd: str) -> None:
 
 
 def main(argv: List[str]) -> None:
+    """Main function.
 
+    Args:
+        argv (List[str]): command line arguments.
+    """
     parser = argparse.ArgumentParser(
         prog="runp",
         description='Run functions in a file.')
