@@ -161,6 +161,16 @@ wut(text: str, woop: bool = False) -> None
         for i, inputstr in enumerate(inputstrs):
             self.assertEqual(runp._escape_split('=', inputstr), results[i])
 
+    def test_args_none(self) -> None:
+        """Run the test of main() None"""
+        with self.assertRaises(SystemExit):
+            runp.main()
+
+        output: str = sys.stdout.getvalue().strip()  # type: ignore
+        error: str = sys.stderr.getvalue().strip()  # type: ignore
+        self.assertEqual(output, "")
+        self.assertTrue(error.startswith("usage: runp"))
+
     def test_args_empty(self) -> None:
         """Run the test of main() empty."""
         with self.assertRaises(SystemExit):
