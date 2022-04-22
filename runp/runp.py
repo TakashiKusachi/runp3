@@ -184,7 +184,7 @@ def run_function(functions: Dict[str, Callable], cmd: str) -> None:
         print(e.args[0])
 
 
-def main(argv: List[str]) -> None:
+def main(argv: Optional[List[str]] = None) -> None:
     """Main function.
 
     Args:
@@ -208,6 +208,8 @@ def main(argv: List[str]) -> None:
         '-d', '--detail',
         help='print function docstring'
     )
+    if argv is None:
+        argv = sys.argv[1:]
     args = parser.parse_args(argv)
 
     runfile = Path(args.runfile).resolve()
